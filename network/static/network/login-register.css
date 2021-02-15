@@ -17,7 +17,7 @@ img {
     margin-bottom: 40px;
 }
 
-.login {
+.login-register {
     width: 350px;
     margin: auto;
     margin-top: 30px;
@@ -33,6 +33,7 @@ img {
 
 #log-reg {
     text-align: center;
+    color: white;
 }
 
 a {
