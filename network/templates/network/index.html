@@ -1,5 +1,18 @@
 {% extends "network/layout.html" %}
 
 {% block body %}
-    TODO
+<div class="container">
+    <h3>Home</h3>
+    <hr>
+    <form action="#" method="post">
+        {% csrf_token %}
+        <div class="mb-3">
+            <textarea class="form-control" id="exampleFormControlTextarea1" rows="2"></textarea>
+        </div>
+        <div id="tweet-btn">
+            <input class="btn btn-info rounded-pill" type="submit" value="Tweet" id="tweet" placeholder="What's happening?">
+        </div>
+    </form>
+</div>
+    
 {% endblock %}

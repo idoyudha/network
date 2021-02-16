@@ -12,9 +12,6 @@
         <link href="{% static 'network/login-register.css' %}" rel="stylesheet">
     </head>
     <body>
-        {% if message %}
-            <div>{{ message }}</div>
-        {% endif %}
         <div class="login-register">
             <img src="{% static 'network/twitter-icon.jpg' %}" alt="twitter-dark-logo">
             <div class="head">
@@ -36,7 +33,12 @@
                 <div id="log-reg">
                     <a href="{% url 'register' %}">Sign up for Twitter</a>
                 </div>
-            </form> 
+            </form>
+            {% if message %}
+            <div class="alert alert-danger mt-4" role="alert">
+                {{ message }}
+            </div>
+            {% endif %}
         </div>
         <!-- Option 1: Bootstrap Bundle with Popper -->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
