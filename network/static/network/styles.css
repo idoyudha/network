@@ -122,9 +122,30 @@ input[type=text]:focus {
   float: right;
 }
 
+.tweet_form {
+  border-bottom: 1px solid white;
+  height: 150px;
+}
+
 #tweet {
   color: white;
   font-weight: bold;
   background-color: #1DA1F2;
   padding: 7px 15px;
+}
+
+.all-tweet {
+  width: 150px;
+  margin-top: 220px;
+  background-color: white;
+  border-radius: 30px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+
+.all_tweet {
+  height: 200px;
+  border-bottom: 1px solid white;
+  font-size: 20px;
 }

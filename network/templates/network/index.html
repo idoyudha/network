@@ -1,18 +1,35 @@
 {% extends "network/layout.html" %}
+{% load static %}
 
 {% block body %}
-<div class="container">
-    <h3>Home</h3>
-    <hr>
-    <form action="#" method="post">
+<h3>Home</h3>
+<hr>
+<div class="tweet_form">
+    <form action="{% url 'index' %}" method="post" id="tweet-post">
         {% csrf_token %}
         <div class="mb-3">
-            <textarea class="form-control" id="exampleFormControlTextarea1" rows="2"></textarea>
+            <textarea class="form-control" id="tweet_text" rows="2"></textarea>
         </div>
         <div id="tweet-btn">
             <input class="btn btn-info rounded-pill" type="submit" value="Tweet" id="tweet" placeholder="What's happening?">
         </div>
     </form>
 </div>
+<div class="all_tweet">
+    <p>User</p>
+    <p>Tweet will be here</p>
+    <p>Timestamp</p>
+    <div class="btn-group" role="group" aria-label="Basic checkbox toggle button group">
+        <button type="button" class="btn btn-outline-primary">Edit</button>
+      
+        <input type="checkbox" class="btn-check" id="like" autocomplete="off">
+        <label class="btn btn-outline-primary" for="like">Like</label>
+      
+        <button type="button" class="btn btn-outline-primary">Comment</button>
+    </div>
+</div>
+{% block script %}
+    <script src="{% static 'network/index.js' %}"></script>
+{% endblock %}
     
 {% endblock %}
