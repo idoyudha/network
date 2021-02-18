@@ -72,12 +72,15 @@ def register(request):
 def tweet_all(request):
     # Get contents of tweet
     queryset = Tweet.objects.all()
-    list_tweet = [{"id": i.id, "tweet": i.tweet_text} for i in queryset]
+    list_tweet = [{"id": i.id, "user":i.user_tweet.username, "tweet": i.tweet_text} for i in queryset]
     data = {
         "data": list_tweet
     }
     return JsonResponse(data)
 
+
+@csrf_exempt
+@login_required
 def tweet_detail(request, tweet_id):
     try:
         data = Tweet.objects.get(id=tweet_id)
@@ -85,6 +88,7 @@ def tweet_detail(request, tweet_id):
         raise Http404
     tweet_data = {
         "id": tweet_id,
+        "user": data.user_tweet.username,
         "tweet": data.tweet_text
     }
     return JsonResponse(tweet_data)
