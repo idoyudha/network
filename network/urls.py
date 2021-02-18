@@ -10,6 +10,7 @@ urlpatterns = [
     path("register", views.register, name="register"),
 
     # API Routes
-    path("tweet_all", views.tweet_all, name="tweet_all"),
-    path("tweet/<int:tweet_id>", views.tweet_detail, name="tweet_detail")
+    path("tweet", views.tweet, name="tweet"),
+    path("tweet/<str:user>", views.tweet_all, name="tweet_all"),
+    path("tweet/<int:tweet_id>", views.tweet_detail, name="tweet_detail"),
 ]

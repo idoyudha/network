@@ -1,6 +1,7 @@
 import json
 from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError
+from django.db.utils import Error
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.http.response import JsonResponse
 from django.shortcuts import render
@@ -13,7 +14,6 @@ from .models import User, Tweet
 
 def index(request):
     return render(request, "network/index.html")
-
 
 def login_view(request):
     if request.method == "POST":
@@ -34,11 +34,9 @@ def login_view(request):
     else:
         return render(request, "network/login.html")
 
-
 def logout_view(request):
     logout(request)
     return HttpResponseRedirect(reverse("index"))
-
 
 def register(request):
     if request.method == "POST":
@@ -66,20 +64,30 @@ def register(request):
     else:
         return render(request, "network/register.html")
 
-
-@csrf_exempt
 @login_required
-def tweet_all(request):
-    # Get contents of tweet
-    queryset = Tweet.objects.all()
-    list_tweet = [{"id": i.id, "user":i.user_tweet.username, "tweet": i.tweet_text} for i in queryset]
-    data = {
-        "data": list_tweet
-    }
-    return JsonResponse(data)
+def tweet(request):
+    # Tweet must be via POST
+    if request.method != "POST":
+        return JsonResponse({"error": "POST request required."}, status=400)
+    
+    data = json.loads(request.body)
+    tweet = data.get("tweet")
 
+    return JsonResponse({"message": "Tweet sent successfully."}, status=201)
 
-@csrf_exempt
+@login_required
+def tweet_all(request, user):
+    # Get contents of tweet 
+    if user == 'home':
+        qs = Tweet.objects.all().order_by('-timestamp')
+    elif user == request.user.username:
+        id = User.objects.values_list('id', flat=True).get(username=user)
+        qs = Tweet.objects.filter(user_tweet=id)
+    else:
+        return JsonResponse({"error": "Invalid page."}, status=400)
+    list_tweet = [{"id": i.id, "user":i.user_tweet.username, "tweet": i.tweet_text} for i in qs]
+    return JsonResponse(list_tweet, safe=False)
+
 @login_required
 def tweet_detail(request, tweet_id):
     try:

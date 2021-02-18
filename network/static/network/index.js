@@ -11,12 +11,13 @@ document.addEventListener('DOMContentLoaded', function() {
 function tweet() {
     event.preventDefault()
 
-    const tweet_text = document.querySelector('#tweet_text').value;
-
+    const tweet = document.querySelector('#tweet_text').value;
+    console.log(tweet)
+    
     fetch('/tweet', {
         method: 'POST',
-        tweet: JSON.stringify({
-          tweet_text: tweet_text
+        body: JSON.stringify({
+          tweet: tweet
         })
     })
     .then(response => response.json())
@@ -29,5 +30,10 @@ function tweet() {
 }
 
 function load(page) {
-    console.log(data);
+    console.log(page)
+    fetch('/tweet_all')
+    .then(response => response.json())
+    .then(tweet => {
+        console.log(tweet)
+    })
 }
