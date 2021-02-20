@@ -4,72 +4,19 @@
 {% block body %}
 <h3>Home</h3>
 <hr>
-{% if user.is_authenticated %}
 <div class="tweet_form">
     <form action="{% url 'tweet' %}" method="post" id="tweet-post">
         {% csrf_token %}
         <div class="mb-3">
-            <textarea class="form-control" id="tweet_text" rows="2"></textarea>
+            <textarea class="form-control" id="tweet_text" name="tweet_text" rows="2"></textarea>
         </div>
         <div id="tweet-btn">
             <input class="btn btn-info rounded-pill" type="submit" value="Tweet" id="tweet" placeholder="What's happening?">
         </div>
     </form>
 </div>
-<div class="row all_tweet">
-    <div class="column left">
-        <img src="https://cdn.pixabay.com/photo/2020/05/11/15/38/tom-5158824_960_720.png" alt="Tom" width="55" height="55">
-    </div>
-    <div class="column right">
-        <p class="text-p">@user<span>timestamp</span></p>
-        <p class="text-p">Tweet will be here</p>
-        <div class="row" role="group" aria-label="tweet group">
-            <div class="col-sm">
-                <p class="t-btn1"><i class="far fa-comment-dots"></i>total</p>
-            </div>
-            <div class="col-sm">
-                <p class="t-btn2"><i class="fas fa-retweet"></i>total</p>
-            </div>
-            <div class="col-sm">
-                <p class="t-btn3"><i class="far fa-heart"></i>total</p>
-            </div>
-            <div class="col-sm">
-                <p class="t-btn4"><i class="far fa-share-square"></i>total</p>
-            </div>
-        </div>
-    </div>
-    <div class="column edit">
-        <i class="fas fa-ellipsis-h"></i>
-    </div>
+<div class="row all_tweet" id="tweet-ground">
 </div>
-{% else %}
-<div class="row all_tweet">
-    <div class="column left">
-        <img src="https://cdn.pixabay.com/photo/2020/05/11/15/38/tom-5158824_960_720.png" alt="Tom" width="55" height="55">
-    </div>
-    <div class="column right">
-        <p class="text-p">@user<span>timestamp</span></p>
-        <p class="text-p">Tweet will be here</p>
-        <div class="row" role="group" aria-label="tweet group">
-            <div class="col-sm">
-                <p class="t-btn1"><i class="far fa-comment-dots"></i>total</p>
-            </div>
-            <div class="col-sm">
-                <p class="t-btn2"><i class="fas fa-retweet"></i>total</p>
-            </div>
-            <div class="col-sm">
-                <p class="t-btn3"><i class="far fa-heart"></i>total</p>
-            </div>
-            <div class="col-sm">
-                <p class="t-btn4"><i class="far fa-share-square"></i>total</p>
-            </div>
-        </div>
-    </div>
-    <div class="column edit">
-        <i class="fas fa-ellipsis-h"></i>
-    </div>
-</div>
-{% endif %}
 {% block script %}
     <script src="{% static 'network/index.js' %}"></script>
 {% endblock %}

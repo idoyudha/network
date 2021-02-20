@@ -11,6 +11,8 @@ from django.views.decorators.csrf import csrf_exempt
 
 from .models import User, Tweet
 
+from datetime import datetime
+
 
 def index(request):
     return render(request, "network/index.html")
@@ -64,16 +66,22 @@ def register(request):
     else:
         return render(request, "network/register.html")
 
+@csrf_exempt
 @login_required
 def tweet(request):
-    # Tweet must be via POST
+    # Composing a new email must be via POST
     if request.method != "POST":
         return JsonResponse({"error": "POST request required."}, status=400)
     
+    # Get contents of email
     data = json.loads(request.body)
-    tweet = data.get("tweet")
+    t = data.get("tweet", "")
 
-    return JsonResponse({"message": "Tweet sent successfully."}, status=201)
+    # Create one email for each recipient, plus sender
+    tweet = Tweet(user_tweet=request.user, tweet_text=t)
+    tweet.save()
+
+    return JsonResponse({"message": "Email sent successfully."}, status=201)
 
 @login_required
 def tweet_all(request, user):
@@ -84,8 +92,8 @@ def tweet_all(request, user):
         id = User.objects.values_list('id', flat=True).get(username=user)
         qs = Tweet.objects.filter(user_tweet=id)
     else:
-        return JsonResponse({"error": "Invalid page."}, status=400)
-    list_tweet = [{"id": i.id, "user":i.user_tweet.username, "tweet": i.tweet_text} for i in qs]
+        return JsonResponse({"error": "Invalid page or You're not the user"}, status=400)
+    list_tweet = [{"id": i.id, "user":i.user_tweet.username, "tweet": i.tweet_text, "time": i.timestamp} for i in qs]
     return JsonResponse(list_tweet, safe=False)
 
 @login_required
