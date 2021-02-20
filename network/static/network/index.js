@@ -29,6 +29,7 @@ function tweet() {
 }
 
 function load_page(user) {
+    
     console.log(user)
     fetch(`/tweet/${user}`)
     .then(response => response.json())

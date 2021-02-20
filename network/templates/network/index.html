@@ -4,6 +4,7 @@
 {% block body %}
 <h3>Home</h3>
 <hr>
+{% if user.is_authenticated %}
 <div class="tweet_form">
     <form action="{% url 'tweet' %}" method="post" id="tweet-post">
         {% csrf_token %}
@@ -15,6 +16,7 @@
         </div>
     </form>
 </div>
+{% endif %}
 <div class="row all_tweet" id="tweet-ground">
 </div>
 {% block script %}

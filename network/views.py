@@ -11,8 +11,7 @@ from django.views.decorators.csrf import csrf_exempt
 
 from .models import User, Tweet
 
-from datetime import datetime
-
+from datetime import date
 
 def index(request):
     return render(request, "network/index.html")
@@ -83,7 +82,7 @@ def tweet(request):
 
     return JsonResponse({"message": "Email sent successfully."}, status=201)
 
-@login_required
+
 def tweet_all(request, user):
     # Get contents of tweet 
     if user == 'home':
@@ -93,7 +92,7 @@ def tweet_all(request, user):
         qs = Tweet.objects.filter(user_tweet=id)
     else:
         return JsonResponse({"error": "Invalid page or You're not the user"}, status=400)
-    list_tweet = [{"id": i.id, "user":i.user_tweet.username, "tweet": i.tweet_text, "time": i.timestamp} for i in qs]
+    list_tweet = [{"id": i.id, "user":i.user_tweet.username, "tweet": i.tweet_text, "time": i.timestamp.strftime("%b %d, %Y")} for i in qs]
     return JsonResponse(list_tweet, safe=False)
 
 @login_required
@@ -108,3 +107,10 @@ def tweet_detail(request, tweet_id):
         "tweet": data.tweet_text
     }
     return JsonResponse(tweet_data)
+
+def profile(request, user):
+    user = request.user
+    context = {
+        user:user
+    }
+    return render(request, "network/profile.html", context)
