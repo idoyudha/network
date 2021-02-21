@@ -82,7 +82,6 @@ def tweet(request):
 
     return JsonResponse({"message": "Email sent successfully."}, status=201)
 
-
 def tweet_all(request, user):
     # Get contents of tweet 
     if user == 'home':
@@ -94,19 +93,6 @@ def tweet_all(request, user):
         return JsonResponse({"error": "Invalid page or You're not the user"}, status=400)
     list_tweet = [{"id": i.id, "user":i.user_tweet.username, "tweet": i.tweet_text, "time": i.timestamp.strftime("%b %d, %Y")} for i in qs]
     return JsonResponse(list_tweet, safe=False)
-
-@login_required
-def tweet_detail(request, tweet_id):
-    try:
-        data = Tweet.objects.get(id=tweet_id)
-    except:
-        raise Http404
-    tweet_data = {
-        "id": tweet_id,
-        "user": data.user_tweet.username,
-        "tweet": data.tweet_text
-    }
-    return JsonResponse(tweet_data)
 
 def profile(request, user):
     user = request.user

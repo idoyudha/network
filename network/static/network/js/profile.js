@@ -1,35 +1,11 @@
 document.addEventListener('DOMContentLoaded', function() {
-
-    // By default, load homepage
-    load_page('home');
-    // Send email after submit form 
-    document.querySelector('form').onsubmit = tweet;
-    
+    // By default, load based on user
+    let user = document.getElementById("username").textContent;
+    console.log(user)
+    load_page(user);
 });
 
-function tweet() {
-    event.preventDefault()
-
-    const tweet = document.querySelector('#tweet_text').value;
-    console.log(tweet)
-    
-    fetch('/tweet', {
-        method: 'POST',
-        body: JSON.stringify({
-          tweet: tweet
-        })
-    })
-    .then(response => response.json())
-    .then(data => {
-        // Print emails
-        console.log(data)
-        // ... do something else with emails ...
-    })
-    .then(() => load_page('home'));
-}
-
 function load_page(user) {
-    
     console.log(user)
     fetch(`/tweet/${user}`)
     .then(response => response.json())

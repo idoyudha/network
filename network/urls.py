@@ -15,5 +15,4 @@ urlpatterns = [
     # API Routes
     path("tweet", views.tweet, name="tweet"),
     path("tweet/<str:user>", views.tweet_all, name="tweet_all"),
-    path("tweet/<int:tweet_id>", views.tweet_detail, name="tweet_detail"),
 ]

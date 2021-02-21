@@ -2,25 +2,25 @@
 {% load static %}
 
 {% block body %}
-<h3>Home</h3>
-<hr>
+    <h3>Home</h3>
+    <hr>
 {% if user.is_authenticated %}
-<div class="tweet_form">
-    <form action="{% url 'tweet' %}" method="post" id="tweet-post">
-        {% csrf_token %}
-        <div class="mb-3">
-            <textarea class="form-control" id="tweet_text" name="tweet_text" rows="2"></textarea>
-        </div>
-        <div id="tweet-btn">
-            <input class="btn btn-info rounded-pill" type="submit" value="Tweet" id="tweet" placeholder="What's happening?">
-        </div>
-    </form>
-</div>
+    <div class="tweet_form">
+        <form action="{% url 'tweet' %}" method="post" id="tweet-post">
+            {% csrf_token %}
+            <div class="mb-3">
+                <textarea class="form-control" id="tweet_text" name="tweet_text" rows="2"></textarea>
+            </div>
+            <div id="tweet-btn">
+                <input class="btn btn-info rounded-pill" type="submit" value="Tweet" id="tweet" placeholder="What's happening?">
+            </div>
+        </form>
+    </div>
 {% endif %}
-<div class="row all_tweet" id="tweet-ground">
-</div>
+    <div class="row all_tweet" id="tweet-ground">
+    </div>
 {% block script %}
-    <script src="{% static 'network/index.js' %}"></script>
+    <script src="{% static 'network/js/index.js' %}"></script>
 {% endblock %}
     
 {% endblock %}

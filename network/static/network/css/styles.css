@@ -32,7 +32,6 @@ body {
     color: #1DA1F2;
 }
 
-
 .fa-home, .fa-envelope, .fa-sign-out-alt, .fa-door-closed {
     margin-right: 20px;
 }
@@ -77,7 +76,7 @@ body {
 
 input[type=text] {
   background-color: rgb(35, 35, 35);
-  background-image: url("/static/network/search-solid.png");
+  background-image: url("/static/network/image/search-solid.png");
   background-size: 15px;
   background-position: 15px 14px;
   background-repeat: no-repeat;
@@ -96,32 +95,6 @@ input[type=text]:focus {
   border-color: #1DA1F2;
   background-color: transparent;
 }
-
-/* .card {
-  width: 100%;
-} */
-
-/* .card {
-  width: 350px;
-  margin-top: 80px;
-  background-color: rgb(35, 35, 35);
-  border-radius: 30px;
-  padding-top: 5px;
-  padding-bottom: 5px;
-} */
-
-/* .card-header, .card-body {
-  border-bottom: 1px solid #111;
-}
-
-.card-body:hover {
-  border-bottom: 1px solid #111;
-  background-color: rgb(45, 45, 45);
-}
-
-.card-footer {
-  color: #1DA1F2;
-} */
 
 #tweet-btn {
   float: right;
@@ -187,4 +160,23 @@ p {
 
 #btn {
   margin-top: 15px;
+}
+
+button {
+  float: right;
+  margin-top: 10px;
+}
+
+#profile {
+  width: 20%;
+  border: 2px solid black;
+  border-radius: 50%;
+  position: relative;
+  z-index: 1;
+  margin-left: 20px;
+  margin-top: -60px;
+}
+
+.text-profile {
+  font-size: 15px;
 }
