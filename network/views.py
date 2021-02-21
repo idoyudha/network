@@ -9,12 +9,16 @@ from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
 
-from .models import User, Tweet
+from .models import User, Tweet, Profile
 
 from datetime import date
 
 def index(request):
-    return render(request, "network/index.html")
+    list_user = User.objects.values_list('username', flat=True).exclude(username=request.user)
+    context = {
+        "list_user": list_user
+    }
+    return render(request, "network/index.html", context)
 
 def login_view(request):
     if request.method == "POST":
@@ -83,10 +87,11 @@ def tweet(request):
     return JsonResponse({"message": "Email sent successfully."}, status=201)
 
 def tweet_all(request, user):
+    list_user = User.objects.values_list('username', flat=True)
     # Get contents of tweet 
     if user == 'home':
         qs = Tweet.objects.all().order_by('-timestamp')
-    elif user == request.user.username:
+    elif user in list_user:
         id = User.objects.values_list('id', flat=True).get(username=user)
         qs = Tweet.objects.filter(user_tweet=id)
     else:
@@ -94,9 +99,15 @@ def tweet_all(request, user):
     list_tweet = [{"id": i.id, "user":i.user_tweet.username, "tweet": i.tweet_text, "time": i.timestamp.strftime("%b %d, %Y")} for i in qs]
     return JsonResponse(list_tweet, safe=False)
 
-def profile(request, user):
-    user = request.user
-    context = {
-        user:user
-    }
-    return render(request, "network/profile.html", context)
+
+# Profile page
+def profile(request, user_profile):
+    list_user = User.objects.values_list('username', flat=True)
+    if user_profile in list_user:
+        context = {
+            "username": user_profile,
+            "list_user": list_user
+        }
+        return render(request, "network/profile.html", context)
+    else:
+        return JsonResponse({"error": "Profile not found."}, status=404)

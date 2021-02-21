@@ -10,7 +10,7 @@ urlpatterns = [
     path("register", views.register, name="register"),
 
     # Profile page
-    path("profile/<str:user>", views.profile, name="profile"),
+    path("profile/<str:user_profile>", views.profile, name="profile"),
 
     # API Routes
     path("tweet", views.tweet, name="tweet"),
