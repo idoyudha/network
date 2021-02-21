@@ -20,7 +20,7 @@ class Tweet(models.Model):
 class Profile(models.Model):
     username = models.ForeignKey(User, on_delete=models.CASCADE)
     bio = models.CharField(max_length=280, default="CS50 Web Project 4 Network")
-    followers = models.ManyToManyField(User, blank=True, related_name="followed_by")
+    following = models.ManyToManyField(User, blank=True, related_name="following")
 
     def __str__(self):
         return f"{self.username}"

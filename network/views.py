@@ -103,10 +103,14 @@ def tweet_all(request, user):
 # Profile page
 def profile(request, user_profile):
     list_user = User.objects.values_list('username', flat=True)
+    id = User.objects.values_list('id', flat=True).get(username=user_profile)
+    profile = Profile.objects.filter(id=id)
+    follow = Profile.objects.filter(following=id).count()
     if user_profile in list_user:
         context = {
             "username": user_profile,
-            "list_user": list_user
+            "profile": profile,
+            "follow": follow
         }
         return render(request, "network/profile.html", context)
     else:
