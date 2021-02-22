@@ -99,19 +99,37 @@ def tweet_all(request, user):
     list_tweet = [{"id": i.id, "user":i.user_tweet.username, "tweet": i.tweet_text, "time": i.timestamp.strftime("%b %d, %Y")} for i in qs]
     return JsonResponse(list_tweet, safe=False)
 
-
-# Profile page
 def profile(request, user_profile):
-    list_user = User.objects.values_list('username', flat=True)
+    list_user = User.objects.values_list('username', flat=True).exclude(username=request.user)
+    check_user = User.objects.values_list('username', flat=True)
     id = User.objects.values_list('id', flat=True).get(username=user_profile)
     profile = Profile.objects.filter(id=id)
     follow = Profile.objects.filter(following=id).count()
-    if user_profile in list_user:
+    # Check if user is already follow
+    follow_data = Profile.objects.values_list('following', flat=True).filter(username=id)
+    if user_profile in check_user:
         context = {
+            "list_user": list_user,
             "username": user_profile,
             "profile": profile,
-            "follow": follow
+            "follow": follow,
+            "follow_data": follow_data
         }
         return render(request, "network/profile.html", context)
     else:
         return JsonResponse({"error": "Profile not found."}, status=404)
+
+@csrf_exempt
+@login_required
+def following(request, user_profile):
+    id = User.objects.values_list('id', flat=True).get(username=user_profile)
+    user_id = request.user.id
+    obj = Profile.objects.filter(username=user_id)
+    data = json.loads(request.body)
+    f = data.get("follow", "")
+    if f == 'follow':
+        obj.following.add(id)
+        return JsonResponse({"message": "Follow successfully."}, status=201)
+    else:
+        obj.following.remove(id)
+        return JsonResponse({"message": "Unfollow successfully."}, status=201)

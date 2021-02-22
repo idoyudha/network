@@ -36,12 +36,14 @@
                     <input type="text" name="q" placeholder="Search Twitter"></i><br>
                 </form>
             </div>
+            {% if user.is_authenticated %}
             <div id="people">
                 <p id="who-follow" style="border-bottom: 1px solid grey;">Who to Follow</p>
                 {% for user in list_user %}
                     <p id="follow"><a href="/profile/{{ user }}" style="text-decoration: none;"></i>{{ user }}</a></p>
                 {% endfor %}
             </div>
+            {% endif %}
         </div>
     </body>
 </html>

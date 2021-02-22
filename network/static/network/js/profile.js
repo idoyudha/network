@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded', function() {
+    // Button click for follow and unfollow
     // By default, load based on user
     let user = document.getElementById("username").textContent;
     console.log(user)
@@ -59,4 +60,8 @@ function load_page(user) {
 
         };
     })
+}
+
+function follow(user) {
+
 }
