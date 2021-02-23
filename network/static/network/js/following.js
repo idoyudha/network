@@ -1,10 +1,10 @@
 document.addEventListener('DOMContentLoaded', function() {
-    // By default, load based on user
-    let user = document.getElementById("username").textContent;
-    load_page(user);
+    // By default, load homepage
+    load_page('following');    
 });
 
 function load_page(user) {
+    console.log(user)
     fetch(`/tweet/${user}`)
     .then(response => response.json())
     .then(tweets => {
@@ -54,7 +54,6 @@ function load_page(user) {
                                 </div>
                             </div>`;
             data.appendChild(foot)
-
-        };
-    })
+        }
+    });
 }

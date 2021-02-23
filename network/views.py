@@ -70,7 +70,7 @@ def register(request):
         return render(request, "network/register.html")
 
 @csrf_exempt
-@login_required
+@login_required(login_url='/login/')
 def tweet(request):
     # Composing a new email must be via POST
     if request.method != "POST":
@@ -88,9 +88,14 @@ def tweet(request):
 
 def tweet_all(request, user):
     list_user = User.objects.values_list('username', flat=True)
+    # Get data for following tweets
+    data = Profile.objects.values_list('following', flat=True).filter(id=request.user.id)
     # Get contents of tweet 
     if user == 'home':
         qs = Tweet.objects.all().order_by('-timestamp')
+    elif user =='following':
+        following = Profile.objects.values_list('following', flat=True).filter(id=1)
+        qs = Tweet.objects.filter(user_tweet__in=following)
     elif user in list_user:
         id = User.objects.values_list('id', flat=True).get(username=user)
         qs = Tweet.objects.filter(user_tweet=id).order_by('-timestamp')
@@ -99,6 +104,7 @@ def tweet_all(request, user):
     list_tweet = [{"id": i.id, "user":i.user_tweet.username, "tweet": i.tweet_text, "time": i.timestamp.strftime("%b %d, %Y")} for i in qs]
     return JsonResponse(list_tweet, safe=False)
 
+@login_required(login_url='/login/')
 def profile(request, user_profile):
     list_user = User.objects.values_list('username', flat=True).exclude(username=request.user)
     check_user = User.objects.values_list('username', flat=True)
@@ -122,7 +128,7 @@ def profile(request, user_profile):
         return JsonResponse({"error": "Profile not found."}, status=404)
 
 @csrf_exempt
-@login_required
+@login_required(login_url='/login/')
 def following(request, user_profile):
     id = User.objects.values_list('id', flat=True).get(username=user_profile)
     user_id = request.user.id
@@ -130,12 +136,24 @@ def following(request, user_profile):
     obj.following.add(id)
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
-
 @csrf_exempt
-@login_required
+@login_required(login_url='/login/')
 def unfollow(request, user_profile):
     id = User.objects.values_list('id', flat=True).get(username=user_profile)
     user_id = request.user.id
     obj = Profile.objects.get(username=user_id)
     obj.following.remove(id)
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+@login_required(login_url='/login/')
+def tweet_following(request):
+    list_user = User.objects.values_list('username', flat=True).exclude(username=request.user)
+    context = {
+        "list_user": list_user
+    }
+    return render(request, "network/following.html", context)
+
+# Get list of user that followed by user
+# id = request.user.id
+# following = Profile.objects.values_list('following', flat=True).filter(id=1)
+# tweets = Tweets.objects.filter(user_tweet__in=following)

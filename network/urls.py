@@ -12,7 +12,10 @@ urlpatterns = [
     # Profile page
     path("profile/<str:user_profile>", views.profile, name="profile"),
     path("follow/<str:user_profile>", views.following, name="following"), # follow user
-    path("unfollow/<str:user_profile>", views.unfollow, name="unfollow"), # follow user
+    path("unfollow/<str:user_profile>", views.unfollow, name="unfollow"), # unfollow user
+
+    # Just tweets from following user
+    path("following", views.tweet_following, name="following"),
 
     # API Routes
     path("tweet", views.tweet, name="tweet"), # view all tweet json
