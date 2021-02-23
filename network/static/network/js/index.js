@@ -11,7 +11,9 @@ function tweet() {
 
     const tweet = document.querySelector('#tweet_text').value;
     console.log(tweet)
-    
+
+    document.querySelector('#tweet-ground').innerHTML = ""
+
     fetch('/tweet', {
         method: 'POST',
         body: JSON.stringify({
@@ -20,12 +22,10 @@ function tweet() {
     })
     .then(response => response.json())
     .then(data => {
-        // Print emails
-        console.log(data)
-        // ... do something else with emails ...
+        console.log(data);
+        load_page('home');
     })
-    .then(() => load_page('home'));
-}
+};
 
 function load_page(user) {
     console.log(user)
@@ -78,7 +78,6 @@ function load_page(user) {
                                 </div>
                             </div>`;
             data.appendChild(foot)
-
-        };
-    })
+        }
+    });
 }

@@ -1,13 +1,12 @@
 document.addEventListener('DOMContentLoaded', function() {
-    // Button click for follow and unfollow
     // By default, load based on user
     let user = document.getElementById("username").textContent;
-    console.log(user)
     load_page(user);
+    // Button click for follow and unfollow
+    // document.querySelector('#f-btn').addEventListener('click', follow);
 });
 
 function load_page(user) {
-    console.log(user)
     fetch(`/tweet/${user}`)
     .then(response => response.json())
     .then(tweets => {
@@ -62,6 +61,16 @@ function load_page(user) {
     })
 }
 
-function follow(user) {
+// function follow(user) {
 
-}
+//     const fo = document.querySelector('#f-btn').textContent;
+//     console.log(fo)
+
+//     fetch(`/follow/${user}`, {
+//         method: 'PUT',
+//         body: JSON.stringify({
+//             follow: fo
+//         })
+//     })
+//     .then(() => load_page(user))
+// }

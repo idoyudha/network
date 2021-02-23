@@ -84,7 +84,7 @@ def tweet(request):
     tweet = Tweet(user_tweet=request.user, tweet_text=t)
     tweet.save()
 
-    return JsonResponse({"message": "Email sent successfully."}, status=201)
+    return JsonResponse({"message": "Tweet sent successfully."}, status=201)
 
 def tweet_all(request, user):
     list_user = User.objects.values_list('username', flat=True)
@@ -93,7 +93,7 @@ def tweet_all(request, user):
         qs = Tweet.objects.all().order_by('-timestamp')
     elif user in list_user:
         id = User.objects.values_list('id', flat=True).get(username=user)
-        qs = Tweet.objects.filter(user_tweet=id)
+        qs = Tweet.objects.filter(user_tweet=id).order_by('-timestamp')
     else:
         return JsonResponse({"error": "Invalid page or You're not the user"}, status=400)
     list_tweet = [{"id": i.id, "user":i.user_tweet.username, "tweet": i.tweet_text, "time": i.timestamp.strftime("%b %d, %Y")} for i in qs]
@@ -103,14 +103,16 @@ def profile(request, user_profile):
     list_user = User.objects.values_list('username', flat=True).exclude(username=request.user)
     check_user = User.objects.values_list('username', flat=True)
     id = User.objects.values_list('id', flat=True).get(username=user_profile)
+    id_login = User.objects.values_list('id', flat=True).get(username=request.user)
     profile = Profile.objects.filter(id=id)
     follow = Profile.objects.filter(following=id).count()
     # Check if user is already follow
-    follow_data = Profile.objects.values_list('following', flat=True).filter(username=id)
+    follow_data = Profile.objects.values_list('following', flat=True).filter(username=id_login)
     if user_profile in check_user:
         context = {
             "list_user": list_user,
             "username": user_profile,
+            "id": id,
             "profile": profile,
             "follow": follow,
             "follow_data": follow_data
@@ -124,12 +126,16 @@ def profile(request, user_profile):
 def following(request, user_profile):
     id = User.objects.values_list('id', flat=True).get(username=user_profile)
     user_id = request.user.id
-    obj = Profile.objects.filter(username=user_id)
-    data = json.loads(request.body)
-    f = data.get("follow", "")
-    if f == 'follow':
-        obj.following.add(id)
-        return JsonResponse({"message": "Follow successfully."}, status=201)
-    else:
-        obj.following.remove(id)
-        return JsonResponse({"message": "Unfollow successfully."}, status=201)
+    obj = Profile.objects.get(username=user_id)
+    obj.following.add(id)
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+
+@csrf_exempt
+@login_required
+def unfollow(request, user_profile):
+    id = User.objects.values_list('id', flat=True).get(username=user_profile)
+    user_id = request.user.id
+    obj = Profile.objects.get(username=user_id)
+    obj.following.remove(id)
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))

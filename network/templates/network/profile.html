@@ -8,18 +8,18 @@
     <img src="{% static 'network/image/twitter.png' %}" alt="Twitter" style="width:100%">
     {% if user.is_authenticated %}
         {% if username != request.user.username %}
-            {% if request.user.id in follow_data %}
-                <button type="button" id="f-btn" class="btn btn-outline-primary btn-sm">Unfollow</button>
+            {% if id in follow_data %}
+                <a href="{% url 'unfollow' username %}" id="f-btn" class="btn btn-outline-warning btn-sm">Unfollow</a>
             {% else %}
-                <button type="button" id="f-btn" class="btn btn-outline-primary btn-sm">Follow</button>
+                <a href="{% url 'following' username %}" id="f-btn" class="btn btn-outline-primary btn-sm">Follow</a>
             {% endif %}
         {% else %}
-            <button type="button" class="btn btn-outline-primary btn-sm">Edit Profile</button>
+            <button type="button" id="user_p" class="btn btn-outline-primary btn-sm" style="float: right; margin-top: 10px;">Edit Profile</button>
         {% endif %}
     {% endif %}
     <img src="{% static 'network/image/t-bird.jpg' %}" alt="Profile" id="profile">
     {% for data in profile %}
-    <p>{{ data.username }}</p>
+    <p id="username_2">{{ data.username }}</p>
     <div class="text-profile">
         <p>{{ data.bio }}</p>
         <p style="margin-left: -7px;"><span style="font-weight: bold">{{ data.following.count }}</span> Following <span style="font-weight: bold">{{ follow }}</span> Followers</p>
