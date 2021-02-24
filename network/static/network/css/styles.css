@@ -114,7 +114,8 @@ input[type=text]:focus {
 }
 
 .tweet_form {
-  border-bottom: 1px solid white;
+  border-bottom: 1px solid rgb(47, 51, 54);
+  border-width: 10px;
   height: 150px;
 }
 
@@ -128,6 +129,8 @@ input[type=text]:focus {
 .all_tweet {
   font-size: 15px;
   padding: 10px;
+  margin-bottom: 10px;
+  border-bottom: 1px solid #111;
 }
 
 .column {
@@ -179,4 +182,35 @@ p {
 
 .text-profile {
   font-size: 15px;
+}
+
+.far {
+  text-decoration: none;
+  font-size: 17px;
+  color: white;
+}
+
+.fa-heart:hover {
+  color: red;
+}
+
+.fa-trash-altt:hover {
+  color: #1DA1F2;
+}
+
+.column {
+  float: left;
+}
+
+.column.side {
+  width: 10%;
+}
+
+.column.middle {
+  width: 90%;
+  padding-left: 20px;
+}
+
+.tweet-footer {
+  margin-top: 10px;
 }
