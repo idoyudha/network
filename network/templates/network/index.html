@@ -7,7 +7,7 @@
     <hr>
 {% if user.is_authenticated %}
     <div class="tweet_form">
-        <form action="{% url 'tweet' %}" method="post" id="tweet-post">
+        <form action="{% url 'index' %}" method="post" id="tweet-post">
             {% csrf_token %}
             <div class="mb-3">
                 <textarea class="form-control" id="tweet_text" name="tweet_text" rows="2"></textarea>

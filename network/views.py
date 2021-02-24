@@ -1,6 +1,5 @@
 import json
 from django.contrib.auth import authenticate, login, logout
-from django.core import paginator
 from django.db import IntegrityError
 from django.db.utils import Error
 from django.http import HttpResponse, HttpResponseRedirect, Http404
@@ -16,19 +15,25 @@ from .models import User, Tweet, Profile
 from datetime import date
 
 def index(request):
-    list_user = User.objects.values_list('username', flat=True).exclude(username=request.user)
-    
-    # Get data from query
-    qs = Tweet.objects.all().order_by('-timestamp')
-    paginator = Paginator(qs, 10)
+    # Create one tweet 
+    if request.method == "POST":
+        t = request.POST["tweet_text"]
+        Tweet.objects.create(user_tweet=request.user, tweet_text=t)
+        return HttpResponseRedirect('/')
+    else:
+        list_user = User.objects.values_list('username', flat=True).exclude(username=request.user)
+        
+        # Get data from query
+        qs = Tweet.objects.all().order_by('-timestamp')
+        paginator = Paginator(qs, 10)
 
-    page_number = request.GET.get('page') # split query for every page
-    page_obj = paginator.get_page(page_number)
-    context = {
-        "list_user": list_user,
-        "page_obj": page_obj
-    }
-    return render(request, "network/index.html", context)
+        page_number = request.GET.get('page') # split query for every page
+        page_obj = paginator.get_page(page_number)
+        context = {
+            "list_user": list_user,
+            "page_obj": page_obj
+        }
+        return render(request, "network/index.html", context)
 
 def login_view(request):
     if request.method == "POST":
@@ -94,7 +99,7 @@ def tweet(request):
     tweet = Tweet(user_tweet=request.user, tweet_text=t)
     tweet.save()
 
-    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+    return render(request, "network/index.html")
 
 def tweet_all(request, user):
     list_user = User.objects.values_list('username', flat=True)
@@ -125,7 +130,8 @@ def profile(request, user_profile):
     # Check if user is already follow
     follow_data = Profile.objects.values_list('following', flat=True).filter(username=id_login)
     # Get data from query
-    qs = Tweet.objects.all().order_by('-timestamp')
+    id = User.objects.values_list('id', flat=True).get(username=user_profile)
+    qs = Tweet.objects.filter(user_tweet=id).order_by('-timestamp')
     paginator = Paginator(qs, 10)
 
     page_number = request.GET.get('page') # split query for every page
@@ -167,7 +173,8 @@ def unfollow(request, user_profile):
 def tweet_following(request):
     list_user = User.objects.values_list('username', flat=True).exclude(username=request.user)
     # Get data from query
-    qs = Tweet.objects.all().order_by('-timestamp')
+    following = Profile.objects.values_list('following', flat=True).filter(id=request.user.id)
+    qs = Tweet.objects.filter(user_tweet__in=following).order_by('-timestamp')
     paginator = Paginator(qs, 10)
 
     page_number = request.GET.get('page') # split query for every page

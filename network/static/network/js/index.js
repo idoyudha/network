@@ -1,3 +1,5 @@
+// Not using this since paginator fault
+
 function tweet() {
     event.preventDefault()
 
@@ -29,21 +31,21 @@ function load_page(user) {
         for (let i = 0; i < tweets.length; i++) {
             let obj = tweets[i];
             
-            // Create new div element
+            Create new div element
             const data = document.createElement("div");
             data.className = "card text-white bg-dark mb-3";
 
-            // Create tweet card from parent element tweet-ground
+            Create tweet card from parent element tweet-ground
             const l = document.getElementById("tweet-ground")
             const card = l.appendChild(data)
 
-            // Create new element for tweet head
+            Create new element for tweet head
             const head = document.createElement("div")
             head.className = "card-header";
             head.innerHTML = `@${obj.user} &#0149; ${obj.time}`;
             data.appendChild(head)
 
-            // Create new element for tweet body
+            Create new element for tweet body
             const body = document.createElement("div")
             body.className = "card-body"
             const bd = data.appendChild(body)
