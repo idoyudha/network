@@ -127,7 +127,7 @@ input[type=text]:focus {
 
 .all_tweet {
   font-size: 15px;
-  padding: 5px;
+  padding: 10px;
 }
 
 .column {
@@ -147,32 +147,12 @@ input[type=text]:focus {
   width: 7%;
 }
 
-.far, .fas {
-  margin-right: 10px;
-}
-
-.t-btn1:hover, .t-btn4:hover {
-  color: #1DA1F2;
-}
-
-.t-btn2:hover {
-  color: green;
-}
-
-.t-btn3:hover {
-  color: red;
-}
-
 span {
   margin-left: 10px;
 }
 
 p {
   margin: 0px;
-}
-
-#btn {
-  margin-top: 15px;
 }
 
 #f-btn {
@@ -189,6 +169,13 @@ p {
   margin-left: 20px;
   margin-top: -60px;
 }
+
+#profile_home {
+  width: 50px;
+  position: static;
+  border-radius: 50%;
+}
+
 
 .text-profile {
   font-size: 15px;

@@ -1,10 +1,3 @@
-document.addEventListener('DOMContentLoaded', function() {
-    // By default, load homepage
-    load_page('home');
-    // Send tweet after submit form 
-    document.querySelector('form').onsubmit = tweet; 
-});
-
 function tweet() {
     event.preventDefault()
 
