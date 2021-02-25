@@ -6,16 +6,21 @@
     <h3>Following</h3>
     <hr>
 {% for tweet in page_obj %}
-    <div class="row all_tweet" id="tweet-ground">
+<div class="row all_tweet" id="tweet-ground">
+    <div class="column side">
         <img src="{% static 'network/image/t-bird.jpg' %}" alt="Profile" id="profile_home">
-        <h3>{{ tweet.user_tweet }}</h3>
-        <p>{{ tweet.timestamp | naturaltime }}</p>
+    </div>
+    <div class="column middle">
+        <p style="color: rgb(110, 118, 125);">@{{ tweet.user_tweet }} &#183; {{ tweet.timestamp | naturaltime }} 
+            {% if request.user.username == tweet.user_tweet %}
+            <span><a href="#" class="far fa-edit" style="float: right;"></a></span></p>
+            {% endif %}
         <p>{{ tweet.tweet_text }}</p>
         <div class="tweet-footer">
-            <i>For like and edit button</i>
+            <a href="#" class="far fa-heart"> total likes</a>
         </div>
     </div>
-    <hr>
+</div>
 {% endfor %}
     <div class="pagination">
         <span class="step-links">
@@ -32,5 +37,4 @@
             {% endif %}
         </span>
     </div>
-
 {% endblock %}
