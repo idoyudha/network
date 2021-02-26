@@ -4,7 +4,7 @@ from django.db import IntegrityError
 from django.db.utils import Error
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.http.response import JsonResponse
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
@@ -101,6 +101,26 @@ def tweet(request):
 
     return render(request, "network/index.html")
 
+@csrf_exempt
+@login_required(login_url='/login/')
+def tweet_id(request, pk):
+    qs = Tweet.objects.filter(id=pk)
+    # Return tweets via GET
+    if request.method == 'GET':
+        list_tweet = [{"id": i.id, "user":i.user_tweet.username, "tweet": i.tweet_text, "time": i.timestamp.strftime("%b %d, %Y"), "likes": i.likes.count()} for i in qs]
+        return JsonResponse(list_tweet, safe=False)
+    # Update edited tweet
+    elif request.method == 'PUT':
+        tweet = Tweet.objects.get(id=pk)
+        data = json.loads(request.body)
+        tweet.tweet_text = data.get("tweet", "")
+        tweet.save()
+        return JsonResponse({"message": "Tweet edited successfully."}, status=201)
+    # Tweet must be via GET or PUT
+    else:
+        return JsonResponse({"error": "GET or PUT request required."}, status=400)
+
+@login_required(login_url='/login/')
 def tweet_all(request, user):
     list_user = User.objects.values_list('username', flat=True)
     # Get data for following tweets
@@ -184,3 +204,21 @@ def tweet_following(request):
         "page_obj": page_obj
     }
     return render(request, "network/following.html", context)
+
+@csrf_exempt
+@login_required(login_url='/login/')
+def edit_tweet(request):
+    # Composing a new tweet must be via PUT
+    if request.method != "PUT":
+        return JsonResponse({"error": "POST request required."}, status=400)
+    
+    # Get contents of edited tweet
+    data = json.loads(request.body)
+    t = data.get("tweet", "")
+
+    # Update tweet based on ID
+    tweet = Tweet.objects.get(id=id)
+    tweet.tweet_text = t
+    tweet.save()
+
+    return JsonResponse({"message": "Tweet has been edited"}, status=201)

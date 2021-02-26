@@ -77,8 +77,39 @@ function load_page(user) {
 }
 
 function edit(id) {
-    console.log("edit_function")
-    console.log(id)
+    // Get content of tweet
     let tweetText = document.getElementById(`tweet_${id}`).textContent;
     console.log(tweetText)
+
+    // Generate textarea in tweet cards
+    document.getElementById(`tweet_${id}`).innerHTML = 
+    `<form id="edit-tweet">
+        <div class="mb-3">
+            <textarea class="form-control" id="edit_tweet_text" name="tweet_text" rows="2">${tweetText}</textarea>
+        </div>
+        <div id="tweet-btn">
+            <input class="btn btn-info rounded-pill" type="submit" value="Save">
+        </div>
+    </form>`
+    
+    document.getElementById('edit-tweet').onsubmit = () => {
+        // Take value of edited textfield
+        let edited_tweet = document.getElementById('edit_tweet_text').value;
+        console.log(edited_tweet)
+
+        fetch(`/tweet_id/${id}`, {
+            method: 'PUT',
+            body: JSON.stringify({
+                tweet: edited_tweet
+          })
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log('Success:', data)
+        })
+        .catch((error) => {
+            console.error('Error:', error)
+        })
+        return false;
+    }
 }

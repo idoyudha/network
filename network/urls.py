@@ -18,7 +18,8 @@ urlpatterns = [
     path("following", views.tweet_following, name="following"),
 
     # API Routes
-    path("tweet", views.tweet, name="tweet"), # view all tweet json
+    path("tweet", views.tweet, name="tweet"), 
+    path("tweet_id/<int:pk>", views.tweet_id, name="tweet_id"), # view all tweet json
     path("tweet/<str:user>", views.tweet_all, name="tweet_all"), # view tweet for specific user
-    
+    path("edit_tweet", views.edit_tweet, name="edit_tweet") # edit tweet for specific id
 ]
