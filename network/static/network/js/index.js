@@ -80,9 +80,9 @@ function edit(id) {
     // Get content of tweet
     let tweetText = document.getElementById(`tweet_${id}`).textContent;
     console.log(tweetText)
-
+    let tweet_area = document.getElementById(`tweet_${id}`)
     // Generate textarea in tweet cards
-    document.getElementById(`tweet_${id}`).innerHTML = 
+    tweet_area.innerHTML = 
     `<form id="edit-tweet">
         <div class="mb-3">
             <textarea class="form-control" id="edit_tweet_text" name="tweet_text" rows="2">${tweetText}</textarea>
@@ -92,7 +92,10 @@ function edit(id) {
         </div>
     </form>`
     
-    document.getElementById('edit-tweet').onsubmit = () => {
+    document.getElementById('edit-tweet').onsubmit = function(event) {
+        // Prevent not to reload
+        event.preventDefault()
+
         // Take value of edited textfield
         let edited_tweet = document.getElementById('edit_tweet_text').value;
         console.log(edited_tweet)
@@ -106,6 +109,7 @@ function edit(id) {
         .then(response => response.json())
         .then(data => {
             console.log('Success:', data)
+            tweet_area.innerHTML = edited_tweet
         })
         .catch((error) => {
             console.error('Error:', error)

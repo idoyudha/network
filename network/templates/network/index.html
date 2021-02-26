@@ -26,7 +26,7 @@
         <div class="column middle">
             <p style="color: rgb(110, 118, 125);">@{{ tweet.user_tweet }} &#183; {{ tweet.timestamp | naturaltime }} 
                 {% if request.user == tweet.user_tweet %}
-                    <span><a onclick="edit({{ tweet.id }})" href="#" class="far fa-edit" id="edit" style="float: right;"></a></span></p>
+                    <span><a onclick="edit({{ tweet.id }})" href="#/" class="far fa-edit" id="edit" style="float: right;"></a></span></p>
                 {% endif %}
             <p id="tweet_{{ tweet.id }}">{{ tweet.tweet_text }}</p>
             <div class="tweet-footer">

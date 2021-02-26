@@ -205,20 +205,20 @@ def tweet_following(request):
     }
     return render(request, "network/following.html", context)
 
-@csrf_exempt
-@login_required(login_url='/login/')
-def edit_tweet(request):
-    # Composing a new tweet must be via PUT
-    if request.method != "PUT":
-        return JsonResponse({"error": "POST request required."}, status=400)
+# @csrf_exempt
+# @login_required(login_url='/login/')
+# def edit_tweet(request):
+#     # Composing a new tweet must be via PUT
+#     if request.method != "PUT":
+#         return JsonResponse({"error": "POST request required."}, status=400)
     
-    # Get contents of edited tweet
-    data = json.loads(request.body)
-    t = data.get("tweet", "")
+#     # Get contents of edited tweet
+#     data = json.loads(request.body)
+#     t = data.get("tweet", "")
 
-    # Update tweet based on ID
-    tweet = Tweet.objects.get(id=id)
-    tweet.tweet_text = t
-    tweet.save()
+#     # Update tweet based on ID
+#     tweet = Tweet.objects.get(id=id)
+#     tweet.tweet_text = t
+#     tweet.save()
 
-    return JsonResponse({"message": "Tweet has been edited"}, status=201)
+#     return JsonResponse({"message": "Tweet has been edited"}, status=201)
