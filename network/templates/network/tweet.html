@@ -1,0 +1,41 @@
+{% load static %}
+{% load humanize %}
+
+{% for tweet in page_obj %}
+    <div class="row all_tweet" id="tweet-ground">
+        <div class="column side">
+            <img src="{% static 'network/image/t-bird.jpg' %}" alt="Profile" id="profile_home">
+        </div>
+        <div class="column middle">
+            <p style="color: rgb(110, 118, 125);">@{{ tweet.user_tweet }} &#183; {{ tweet.timestamp | naturaltime }} 
+                {% if request.user == tweet.user_tweet %}
+                    <span><a onclick="edit({{ tweet.id }})" href="#/" class="far fa-edit" id="edit" style="float: right;"></a></span></p>
+                {% endif %}
+            <p id="tweet_{{ tweet.id }}">{{ tweet.tweet_text }}</p>
+            <div class="tweet-footer">
+                {% if request.user in tweet.likes.all %}
+                    <a onclick="like({{ tweet.id }})" id="{{ tweet.id }}_like" class="fa fa-heart red-color"> {{ tweet.likes.count }}</a>
+                {% else %}
+                    <a onclick="like({{ tweet.id }})" id="{{ tweet.id }}_like" class="fa fa-heart"> {{ tweet.likes.count }}</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endfor %}
+<div class="pagination">
+    <span class="step-links">
+        {% if page_obj.has_previous %}
+            <a href="?page=1">&laquo; first</a>
+            <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+        </span>
+
+        {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}">next</a>
+            <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+        {% endif %}
+    </span>
+</div>

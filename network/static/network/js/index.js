@@ -122,7 +122,6 @@ function like(id) {
     console.log(`${id}_like`)
     // Prevent not to reload
     // event.preventDefault()
-    // Need to get username
     let username = document.getElementById('username').textContent
     console.log(username)
     let like_btn = document.getElementById(`${id}_like`)
