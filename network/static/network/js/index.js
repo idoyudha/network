@@ -139,12 +139,11 @@ function like(id) {
               })
             })
             .then(response => response.json())
-            .then(data => {
-                console.log('Unliked:', data)
+            .then(message => {
+                console.log('Unliked:', message)
             })
             like_btn.className = "fa fa-heart"
-            console.log(data[0].likes)
-            document.getElementById(`${id}_like`).textContent = ` ${likes.length}`
+            document.getElementById(`${id}_like`).textContent = ` ${likes.length - 1}`
         }
         else {
             fetch(`/tweet_id/${id}`, {
@@ -154,12 +153,12 @@ function like(id) {
               })
             })
             .then(response => response.json())
-            .then(data => {
-                console.log('Liked:', data)
+            .then(message => {
+                console.log('Liked:', message)
+
             })
             like_btn.className = "fa fa-heart red-color"
-            console.log(data[0].likes)
-            document.getElementById(`${id}_like`).textContent = ` ${likes.length}`
+            document.getElementById(`${id}_like`).textContent = ` ${likes.length + 1}`
         }
     })
 }

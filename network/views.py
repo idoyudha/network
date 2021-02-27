@@ -55,7 +55,7 @@ def login_view(request):
 
 def logout_view(request):
     logout(request)
-    return HttpResponseRedirect(reverse("index"))
+    return HttpResponseRedirect(reverse("login"))
 
 def register(request):
     if request.method == "POST":
@@ -151,10 +151,12 @@ def profile(request, user_profile):
     check_user = User.objects.values_list('username', flat=True)
     id = User.objects.values_list('id', flat=True).get(username=user_profile)
     id_login = User.objects.values_list('id', flat=True).get(username=request.user)
-    profile = Profile.objects.filter(id=id)
+    profile = Profile.objects.filter(username=id)
     follow = Profile.objects.filter(following=id).count()
+
     # Check if user is already follow
     follow_data = Profile.objects.values_list('following', flat=True).filter(username=id_login)
+
     # Get data from query
     id = User.objects.values_list('id', flat=True).get(username=user_profile)
     qs = Tweet.objects.filter(user_tweet=id).order_by('-timestamp')
@@ -210,21 +212,3 @@ def tweet_following(request):
         "page_obj": page_obj
     }
     return render(request, "network/following.html", context)
-
-# @csrf_exempt
-# @login_required(login_url='/login/')
-# def edit_tweet(request):
-#     # Composing a new tweet must be via PUT
-#     if request.method != "PUT":
-#         return JsonResponse({"error": "POST request required."}, status=400)
-    
-#     # Get contents of edited tweet
-#     data = json.loads(request.body)
-#     t = data.get("tweet", "")
-
-#     # Update tweet based on ID
-#     tweet = Tweet.objects.get(id=id)
-#     tweet.tweet_text = t
-#     tweet.save()
-
-#     return JsonResponse({"message": "Tweet has been edited"}, status=201)
