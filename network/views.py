@@ -107,7 +107,7 @@ def tweet_id(request, pk):
     qs = Tweet.objects.filter(id=pk)
     # Return tweets via GET
     if request.method == 'GET':
-        list_tweet = [{"id": i.id, "user":i.user_tweet.username, "tweet": i.tweet_text, "time": i.timestamp.strftime("%b %d, %Y"), "likes": i.likes.count()} for i in qs]
+        list_tweet = [{"id": i.id, "user":i.user_tweet.username, "tweet": i.tweet_text, "time": i.timestamp.strftime("%b %d, %Y"), "likes": list(i.likes.values_list('username', flat=True)) } for i in qs]
         return JsonResponse(list_tweet, safe=False)
     # Update edited tweet
     elif request.method == 'PUT':
