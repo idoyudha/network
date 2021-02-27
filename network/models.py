@@ -9,6 +9,17 @@ from django.dispatch import receiver
 class User(AbstractUser):
     pass
 
+
+class Profile(models.Model):
+    username = models.OneToOneField(User, on_delete=models.CASCADE)
+    bio = models.CharField(max_length=280, default="CS50 Web Project 4 Network")
+    following = models.ManyToManyField(User, blank=True, related_name="following")
+    imageURL = models.URLField(null=True, blank=True)
+
+    def __str__(self):
+        return f"{self.username}"
+
+
 class Tweet(models.Model):
     user_tweet = models.ForeignKey(User, on_delete=models.CASCADE)
     tweet_text = models.CharField(max_length=280)
@@ -17,14 +28,6 @@ class Tweet(models.Model):
 
     def __str__(self):
         return f"{self.user_tweet}: {self.tweet_text[0:10]}"
-
-class Profile(models.Model):
-    username = models.OneToOneField(User, on_delete=models.CASCADE)
-    bio = models.CharField(max_length=280, default="CS50 Web Project 4 Network")
-    following = models.ManyToManyField(User, blank=True, related_name="following")
-
-    def __str__(self):
-        return f"{self.username}"
 
 
 # Automatically create Profile model when User after register a User

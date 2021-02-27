@@ -152,8 +152,9 @@ def profile(request, user_profile):
     id = User.objects.values_list('id', flat=True).get(username=user_profile)
     id_login = User.objects.values_list('id', flat=True).get(username=request.user)
     profile = Profile.objects.filter(username=id)
+    image = profile.values_list('imageURL', flat=True).get()
     follow = Profile.objects.filter(following=id).count()
-
+    
     # Check if user is already follow
     follow_data = Profile.objects.values_list('following', flat=True).filter(username=id_login)
 
@@ -171,6 +172,7 @@ def profile(request, user_profile):
             "username": user_profile,
             "id": id,
             "profile": profile,
+            "image": image,
             "follow": follow,
             "follow_data": follow_data,
             "page_obj": page_obj

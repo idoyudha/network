@@ -6,7 +6,7 @@
 <h3 id="username">{{ username }}</h3>
 <hr>
 <div class="card-profile">
-    <img src="{% static 'network/image/twitter.png' %}" alt="Twitter" style="width:100%">
+    <img src="{% static 'network/image/twitter.png' %}" alt="Twitter" style="width:100%" alt="...">
     {% if user.is_authenticated %}
         {% if username != request.user.username %}
             {% if id in follow_data %}
@@ -18,7 +18,7 @@
             <button type="button" id="user_p" class="btn btn-outline-primary btn-sm" style="float: right; margin-top: 10px;">Edit Profile</button>
         {% endif %}
     {% endif %}
-    <img src="{% static 'network/image/t-bird.jpg' %}" alt="Profile" id="profile">
+    <img src="{{ image }}" alt="Profile" id="profile" onerror="this.onerror=null; this.src='{% static 'network/image/t-bird.jpg' %}'">
     {% for data in profile %}
         <p id="username_2">{{ data.username }}</p>
         <div class="text-profile">
