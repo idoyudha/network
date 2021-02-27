@@ -190,8 +190,18 @@ p {
   color: white;
 }
 
+.fa-heart {
+  text-decoration: none;
+  font-size: 17px;
+  color: white;
+}
+
 .fa-heart:hover {
-  color: red;
+  color:red;
+}
+
+.red-color {
+  color:red;
 }
 
 .fa-trash-altt:hover {
@@ -214,3 +224,4 @@ p {
 .tweet-footer {
   margin-top: 10px;
 }
+

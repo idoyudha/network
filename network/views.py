@@ -113,7 +113,10 @@ def tweet_id(request, pk):
     elif request.method == 'PUT':
         tweet = Tweet.objects.get(id=pk)
         data = json.loads(request.body)
-        tweet.tweet_text = data.get("tweet", "")
+        if data.get("tweet") is not None:
+            tweet.tweet_text = data["tweet"]
+        if data.get("likes") is not None:
+            tweet.likes = data["like"]
         tweet.save()
         return JsonResponse({"message": "Tweet edited successfully."}, status=201)
     # Tweet must be via GET or PUT

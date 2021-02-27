@@ -30,7 +30,7 @@
                 {% endif %}
             <p id="tweet_{{ tweet.id }}">{{ tweet.tweet_text }}</p>
             <div class="tweet-footer">
-                <a href="#" class="far fa-heart"> total likes</a>
+                <a onclick="like({{ tweet.id }})" id="{{ tweet.id }}_like" class="fa fa-heart"> {{ tweet.likes.count }}</a>
             </div>
         </div>
     </div>

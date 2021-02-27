@@ -117,3 +117,22 @@ function edit(id) {
         return false;
     }
 }
+
+function like(id) {
+    console.log(`${id}_like`)
+    // Prevent not to reload
+    event.preventDefault()
+    // fetch(`/tweet_id/${id}`, {
+    //     method: 'PUT',
+    //     body: JSON.stringify({
+    //         tweet: edited_tweet
+    //   })
+    // })
+    let like_btn = document.getElementById(`${id}_like`)
+    if (like_btn.className === "fa fa-heart") {
+        like_btn.className = "fa fa-heart red-color"
+    }
+    else {
+        like_btn.className = "fa fa-heart"
+    }
+}
