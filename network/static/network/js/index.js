@@ -121,18 +121,46 @@ function edit(id) {
 function like(id) {
     console.log(`${id}_like`)
     // Prevent not to reload
-    event.preventDefault()
-    // fetch(`/tweet_id/${id}`, {
-    //     method: 'PUT',
-    //     body: JSON.stringify({
-    //         tweet: edited_tweet
-    //   })
-    // })
+    // event.preventDefault()
+    // Need to get username
+    let username = document.getElementById('username').textContent
+    console.log(username)
     let like_btn = document.getElementById(`${id}_like`)
-    if (like_btn.className === "fa fa-heart") {
-        like_btn.className = "fa fa-heart red-color"
-    }
-    else {
-        like_btn.className = "fa fa-heart"
-    }
+    fetch(`/tweet_id/${id}`)
+    .then(response => response.json())
+    .then(data => {
+        console.log(data)
+        let likes = data[0].likes
+        console.log(likes)
+        if (likes.includes(username)) {
+            fetch(`/tweet_id/${id}`, {
+                method: 'PUT',
+                body: JSON.stringify({
+                    likes: false
+              })
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Unliked:', data)
+            })
+            like_btn.className = "fa fa-heart"
+            console.log(data[0].likes)
+            document.getElementById(`${id}_like`).textContent = ` ${likes.length}`
+        }
+        else {
+            fetch(`/tweet_id/${id}`, {
+                method: 'PUT',
+                body: JSON.stringify({
+                    likes: true
+              })
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Liked:', data)
+            })
+            like_btn.className = "fa fa-heart red-color"
+            console.log(data[0].likes)
+            document.getElementById(`${id}_like`).textContent = ` ${likes.length}`
+        }
+    })
 }

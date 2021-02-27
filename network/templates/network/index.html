@@ -30,7 +30,11 @@
                 {% endif %}
             <p id="tweet_{{ tweet.id }}">{{ tweet.tweet_text }}</p>
             <div class="tweet-footer">
-                <a onclick="like({{ tweet.id }})" id="{{ tweet.id }}_like" class="fa fa-heart"> {{ tweet.likes.count }}</a>
+                {% if request.user in tweet.likes.all %}
+                    <a onclick="like({{ tweet.id }})" id="{{ tweet.id }}_like" class="fa fa-heart red-color"> {{ tweet.likes.count }}</a>
+                {% else %}
+                    <a onclick="like({{ tweet.id }})" id="{{ tweet.id }}_like" class="fa fa-heart"> {{ tweet.likes.count }}</a>
+                {% endif %}
             </div>
         </div>
     </div>

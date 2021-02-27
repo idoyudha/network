@@ -22,7 +22,6 @@ def index(request):
         return HttpResponseRedirect('/')
     else:
         list_user = User.objects.values_list('username', flat=True).exclude(username=request.user)
-        
         # Get data from query
         qs = Tweet.objects.all().order_by('-timestamp')
         paginator = Paginator(qs, 10)
@@ -113,12 +112,16 @@ def tweet_id(request, pk):
     elif request.method == 'PUT':
         tweet = Tweet.objects.get(id=pk)
         data = json.loads(request.body)
+        user = request.user.id
         if data.get("tweet") is not None:
             tweet.tweet_text = data["tweet"]
         if data.get("likes") is not None:
-            tweet.likes = data["like"]
+            if data["likes"] is True:
+                tweet.likes.add(user)
+            else:
+                tweet.likes.remove(user)
         tweet.save()
-        return JsonResponse({"message": "Tweet edited successfully."}, status=201)
+        return JsonResponse({"message": "Tweet edited or liked successfully."}, status=201)
     # Tweet must be via GET or PUT
     else:
         return JsonResponse({"error": "GET or PUT request required."}, status=400)

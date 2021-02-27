@@ -12,23 +12,11 @@
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" integrity="sha512-HK5fgLBL+xu6dm/Ii3z4xhlSUyZgTT9tuc/hSrtw6uzJOvgRr2a9jyxxT1ely+B+xFAmJKVSTbpM/CuL7qxO8w==" crossorigin="anonymous" />
         <link href="{% static 'network/css/styles.css' %}" rel="stylesheet">
-        <script>
-            document.addEventListener('DOMContentLoaded', function() {
-                // By default, load homepage
-                // load_page('home'); // this way is too hard for pagination
-
-                // Send tweet after submit form 
-                // document.querySelector('form').onsubmit = tweet; 
-
-                // let user = document.getElementById("username").textContent;
-                // document.querySelector("#edit").addEventListener("click", edit);
-            });
-        </script>
     </head>
     <body>
         <div class="sidenav">
             {% if user.is_authenticated %}
-                <a href="#"><i class="fab fa-twitter"></i></a>
+                <a href="#" id="username"><i class="fab fa-twitter" style="margin-right: 20px;"></i>{{ request.user.username }}</a>
                 <a href="{% url 'index' %}"><i class="fas fa-home"></i></i>Home</a>
                 <a href="{% url 'profile' request.user %}" id="profile-detail"><i class="far fa-user"></i>Profile</a>
                 <a href="#"><i class="far fa-envelope"></i></i>Message</a>
