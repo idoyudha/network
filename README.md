@@ -46,7 +46,7 @@ Quit the server with CONTROL-C.
   - [Python](https://www.python.org/)
 - Main framework/libraries:
   - [Django Web framework](https://www.djangoproject.com/)
-  - 
+  
 **Databases**
 - [SQLite](https://www.sqlite.org/index.html)
 
