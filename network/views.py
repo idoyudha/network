@@ -203,7 +203,7 @@ def unfollow(request, user_profile):
 def tweet_following(request):
     list_user = User.objects.values_list('username', flat=True).exclude(username=request.user)
     # Get data from query
-    following = Profile.objects.values_list('following', flat=True).filter(id=request.user.id)
+    following = Profile.objects.values_list('following', flat=True).filter(username=request.user.id)
     qs = Tweet.objects.filter(user_tweet__in=following).order_by('-timestamp')
     paginator = Paginator(qs, 10)
 
